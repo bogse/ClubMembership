@@ -7,8 +7,12 @@ namespace clubmembership.Repository
     public class MembershipRepository
     {
         private readonly ApplicationDbContext _DBContext;
+        private MemberRepository _memberRepository;
+        private MembershipTypeRepository _membershipTypeRepository;
         public MembershipRepository()
         {
+            _membershipTypeRepository = new MembershipTypeRepository();
+            _memberRepository = new MemberRepository();
             _DBContext = new ApplicationDbContext();
         }
         public MembershipRepository(ApplicationDbContext dbContext)
@@ -83,9 +87,9 @@ namespace clubmembership.Repository
             }
         }
 
-        public void DeleteMembership(MembershipModel model)
+        public void DeleteMembership(Guid id)
         {
-            var dbObject = _DBContext.Memberships.FirstOrDefault(x => x.Idmembership == model.Idmembership);
+            var dbObject = _DBContext.Memberships.FirstOrDefault(x => x.Idmembership == id);
             if (dbObject != null)
             {
                 _DBContext.Memberships.Remove(dbObject);

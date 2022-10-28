@@ -77,11 +77,17 @@ namespace clubmembership.Repository
             }
         }
 
-        public void DeleteMembershipType(MembershipTypeModel model)
+        public void DeleteMembershipType(Guid id)
         {
-            var dbObject = _DBContext.MembershipTypes.FirstOrDefault(x => x.IdmembershipType == model.IdmembershipType);
+            //cascade delete
+            var dbObject = _DBContext.MembershipTypes.FirstOrDefault(x => x.IdmembershipType == id);
             if (dbObject != null)
             {
+                var memberships = _DBContext.Memberships.Where(x => x.IdmembershipType == dbObject.IdmembershipType); 
+                foreach(var membership in memberships)
+                {
+                    _DBContext.Memberships.Remove(membership);
+                }
                 _DBContext.MembershipTypes.Remove(dbObject);
                 _DBContext.SaveChanges();
             }

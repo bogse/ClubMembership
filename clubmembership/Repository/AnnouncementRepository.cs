@@ -85,9 +85,9 @@ public class AnnouncementRepository
         }
     }
 
-    public void DeleteAnnouncement(AnnouncementModel model)
+    public void DeleteAnnouncement(Guid id) // era AnnouncementeModel inainte de controller
     {
-        var dbObject = _DBContext.Announcements.FirstOrDefault(x => x.Idannouncemment == model.Idannouncemment);
+        var dbObject = _DBContext.Announcements.FirstOrDefault(x => x.Idannouncemment == id);
         if (dbObject != null)
         {
             _DBContext.Announcements.Remove(dbObject);
